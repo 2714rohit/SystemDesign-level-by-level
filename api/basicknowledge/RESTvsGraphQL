@@ -1,3 +1,4 @@
+
 1. Both uses http for requests and responses i.e. transport layer.
 2. GraphQL is query language, it combines multiple request into single and send request to server
    ex. getOrderDetailsForUser
@@ -7,14 +8,15 @@
    }
    , so it goes to server and fetch order Id for user 123.
 3. In case of REST, get user order and then get order details.
-4. Is a GraphQL request any different from a REST API request?
+4. GraphQL is just a query language and popular implementations on the client and server leverage existing JSON standards for requests and responses over HTTP.
+   Is a GraphQL request any different from a REST API request?
    Not really. At least with current server implementations that mostly deals with HTTP and JSON.
 
    -> GraphQL Endpoint - 'There is only one endpoint for a GraphQL server.'
    -> Headers - The relevant authorization headers if any will be applicable here.
    -> Request Body - This is where you will be sending a JSON body to the GraphQL server.
    -> Most server implementations use JSON for request / responses.
-   
+
    Lets now look at what the request body JSON looks like:
 
    {
