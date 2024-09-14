@@ -1,0 +1,70 @@
+1. Both uses http for requests and responses i.e. transport layer.
+2. GraphQL is query language, it combines multiple request into single and send request to server
+   ex. getOrderDetailsForUser
+   {
+   user: 123,
+   orderId: SBEN44567
+   }
+   , so it goes to server and fetch order Id for user 123.
+3. In case of REST, get user order and then get order details.
+4. Is a GraphQL request any different from a REST API request?
+   Not really. At least with current server implementations that mostly deals with HTTP and JSON.
+
+   -> GraphQL Endpoint - 'There is only one endpoint for a GraphQL server.'
+   -> Headers - The relevant authorization headers if any will be applicable here.
+   -> Request Body - This is where you will be sending a JSON body to the GraphQL server.
+   -> Most server implementations use JSON for request / responses.
+   
+   Lets now look at what the request body JSON looks like:
+
+   {
+     "operationName": "",
+     "query": ``,
+     "variables": {}
+   }
+   The JSON body has 3 objects.
+
+   operationName: This is an optional string and can be used to denote the name of the GraphQL operation being performed. This will be useful for logging and debugging later.
+   query: This is the actual GraphQL query. The query language syntax that we speak of about GraphQL comes in here. This is a string which contains the GraphQL syntax. It can be enclosed in backticks (`) since the query is usually multi-line.
+   variables: This is an optional object and should only be used if a variable is being used within a query. Think of it as passing an argument to a function. The values will be substituted directly. It is hard to construct a string with dynamic values and hence while making the query part, you can make use of variables objects for anything dynamic.
+   Alright, lets look at an example for a basic GraphQL query:
+
+   query fetchAuthor {
+     author {
+       id
+       name
+     }
+   }
+   Now lets say the GraphQL server is hosted at https://rohit.app/v1/graphql and it has some Authorization token to access the server.
+
+   The GraphQL request for the above query in JavaScript Fetch will look like the following:
+
+   GraphQL Example Request using Fetch
+   #
+   const endpoint = "https://rohit.app/v1/graphql";
+   const headers = {
+   	"content-type": "application/json",
+       "Authorization": "<token>"
+   };
+   const graphqlQuery = {
+       "operationName": "fetchAuthor",
+       "query": `query fetchAuthor { author { id name } }`,
+       "variables": {}
+   };
+
+   const options = {
+       "method": "POST",
+       "headers": headers,
+       "body": JSON.stringify(graphqlQuery)
+   };
+
+   const response = await fetch(endpoint, options);
+   const data = await response.json();
+
+   console.log(data.data); // data
+   console.log(data.errors); //
+
+   Sounds familiar? Yes!
+   This is very similar to how you make REST API calls.
+   The only part which you need to worry about is constructing the query object of the GraphQL Query.
+
